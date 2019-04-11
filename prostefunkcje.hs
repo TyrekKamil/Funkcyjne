@@ -43,7 +43,7 @@ suma []    = 0
 suma (h:t) = (+) h (suma t)
 
 --4.1.3
-sumaLog [] = []
+sumaLog [] = False
 sumaLog (x:[]) = x
 sumaLog (h:t) = (||) h (sumaLog t)      
  
@@ -62,6 +62,15 @@ parzyste :: Integral a => [a] -> [Bool]
 parzyste []     = []
 parzyste x = map (\x -> (x `mod` 2 == 0))x
 
+--5.1
+mapowanie :: (a -> b) -> [a] -> [b]
+mapowanie _ []     = []
+mapowanie f (x:xs) = f x : mapowanie f xs
+
+--5.1.2
+parzyste' [] = []
+parzyste' x = mapowanie even x
+
 --5.2
 redukcja :: (a -> b -> b) -> b -> [a] -> b
 redukcja f s []    = s
@@ -75,10 +84,50 @@ suma' :: Num a => [a] -> a
 suma' = redukcja (+) 0
 
 --5.2.3
+sumaLog' = redukcja (||) False
+
+--5.2.4
 iloczynLog' = redukcja (&&) True
+
+--5.2.5
+maxB' [] = minBound
+maxB' x = redukcja (max) minBound x
+
+
 --6.2
 wszystkieParzyste  x = iloczynLog' (map (\x -> (x `mod` 2 == 0))x)
+
+--6.3.1
+wiekszy = (>10) . (^2)
+
+--6.3.2
+pierwiastek = sqrt . (**2)
+
+--6.3.4
+compose f g = \x->f(g(x))
 
 --7.1
 funkcjaStala x = const x
 f = funkcjaStala
+
+--7.2.1
+odwroc :: [a] -> [a]
+odwroc [] = []
+odwroc [x] = [x]
+odwroc (h:g:t) = (g : h: t) 
+--7.2.2
+pieost :: [a] -> [a]
+pieost []    = []
+pieost [x]   = [x]
+pieost (h:t) = (last t : init t) ++ [h]
+
+
+--Zdefiniować funkcje head i tail dla list--
+headList [] = []
+headList [x] = [x]
+headList (x:t) = [x]
+
+tail' [] = []
+tail' [x] = [x]
+tail' (_:xs) = xs
+
